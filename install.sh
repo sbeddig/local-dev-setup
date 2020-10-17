@@ -51,6 +51,7 @@ install_dev_apps() {
   sudo snap install intellij-idea-ultimate --classic &&
     sudo ln -s /snap/intellij-idea-ultimate/current/bin/idea.sh /usr/local/bin/idea
   sudo snap install code --classic
+  sudo snap install drawio
   sudo apt install -y \
     python3 \
     python3-pip \
@@ -92,6 +93,9 @@ configure_desktop() {
   dconf write /org/gnome/shell/extensions/system-monitor/thermal-display true
   dconf write /org/gnome/shell/extensions/system-monitor/thermal-style "'digit'"
   dconf write /org/gnome/shell/extensions/system-monitor/net-display false
+
+  gsettings set org.gnome.shell.extensions.dash-to-dock extend-height false
+  gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 64
 
   install_shell_extension unitehardpixel.eu.v43.shell-extension.zip
 }
