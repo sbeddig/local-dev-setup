@@ -6,6 +6,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 install_common_apps() {
   sudo apt install -y \
+    nfs-common \
     curl \
     jq \
     apt-transport-https \
