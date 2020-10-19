@@ -70,10 +70,11 @@ install_dev_apps() {
 clone_repos() {
   mkdir -p "$HOME"/repositories
   cd "$HOME"/repositories
-  repos=$(cat repositories)
-  for repo in $repos; do
+  repositories=$(cat repos)
+  for repo in $repositories; do
     git clone git@github.com:sbeddig/"$repo".git
   done
+  cd "$INSTALL_DIR"
 }
 
 # dconf watch /
