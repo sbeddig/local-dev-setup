@@ -31,7 +31,7 @@ install_common_apps() {
 
 configure_zsh() {
   sudo apt install -y zsh
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || true
 
   cat <<\EOF >>"$HOME"/.bashrc
 
