@@ -4,6 +4,8 @@ set -euo --pipefail
 
 export DEBIAN_FRONTEND=noninteractive
 
+INSTALL_DIR=$PWD
+
 install_common_apps() {
   sudo apt install -y \
     nfs-common \
@@ -105,9 +107,8 @@ install_shell_extension() {
   extension=$1
   wget "https://extensions.gnome.org/extension-data/$extension"
   uuid=$(unzip -c "$extension" metadata.json | tail -n+3 | jq -r .uuid)
-  mkdir -p ~/.local/share/gnome-shell/extensions/"$uuid"
-  unzip -q "$extension" -d ~/.local/share/gnome-shell/extensions/"$uuid"/
-  gnome-shell-extension-tool -e "$uuid"
+  gnome-extensions install "$extension"
+  gnome-extensions enable "$uuid"
   rm "$extension"
 }
 
@@ -117,7 +118,7 @@ configure_security() {
 
 set_wallpaper() {
   mkdir -p "$HOME"/Pictures/Wallpapers
-  cp wallpaper.png "$HOME"/Pictures/Wallpapers/
+  cp "$INSTALL_DIR"/wallpaper.png "$HOME"/Pictures/Wallpapers/
 
   dconf write /org/gnome/desktop/background/picture-uri "'file:///home/simon/Pictures/Wallpapers/wallpaper.png'"
 }
