@@ -3,7 +3,5 @@ articles
 misc
 workstation-infrastructure
 examples
-telefoncenter-services
+telefoncenter
 keycloak-example
-telefoncenter-ui
-telefoncenter-docs
