@@ -39,7 +39,6 @@ configure_zsh() {
   [ -z "$ZSH_VERSION" ] && exec "$SHELL" -l
 EOF
 
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   curl -sfL git.io/antibody | sudo sh -s - -b /usr/local/bin
 
   mkdir -p ~/.zsh/completion
