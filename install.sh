@@ -52,7 +52,7 @@ EOF
 
 install_dev_apps() {
   sudo snap install intellij-idea-ultimate --classic &&
-    sudo ln -s /snap/intellij-idea-ultimate/current/bin/idea.sh /usr/local/bin/idea
+    sudo ln -s /snap/intellij-idea-ultimate/current/bin/idea.sh /usr/local/bin/idea || true
   sudo snap install code --classic
   sudo snap install drawio
   sudo apt install -y \
