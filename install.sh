@@ -45,10 +45,10 @@ EOF
   mkdir -p ~/.zsh/completion
   curl -L https://raw.githubusercontent.com/docker/compose/1.27.4/contrib/completion/zsh/_docker-compose >~/.zsh/completion/_docker-compose
 
-  cp zsh/.bash_aliases ~/.bash_aliases
-  cp zsh/.zshrc ~/.zshrc
-  cp zsh/.zsh_plugins ~/.zsh_plugins
-  cp zsh/.p10k.zsh ~/.p10k.zsh
+  cp "$INSTALL_DIR"/zsh/.bash_aliases ~/.bash_aliases
+  cp "$INSTALL_DIR"/zsh/.zshrc ~/.zshrc
+  cp "$INSTALL_DIR"/zsh/.zsh_plugins ~/.zsh_plugins
+  cp "$INSTALL_DIR"/zsh/.p10k.zsh ~/.p10k.zsh
 }
 
 install_dev_apps() {
