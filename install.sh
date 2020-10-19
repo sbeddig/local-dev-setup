@@ -47,7 +47,7 @@ EOF
 
   cp "$INSTALL_DIR"/zsh/.bash_aliases ~/.bash_aliases
   cp "$INSTALL_DIR"/zsh/.zshrc ~/.zshrc
-  cp "$INSTALL_DIR"/zsh/.zsh_plugins ~/.zsh_plugins
+  cp "$INSTALL_DIR"/zsh/.zsh_plugins.txt ~/.zsh_plugins.txt
   cp "$INSTALL_DIR"/zsh/.p10k.zsh ~/.p10k.zsh
 }
 
