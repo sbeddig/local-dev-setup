@@ -21,6 +21,13 @@ antibody bundle < ~/.zsh_plugins.txt
 fpath=(~/.zsh/completion $fpath)
 autoload -Uz compinit && compinit -i
 
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
 complete -C '/usr/bin/aws_completer' aws
 
 source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
