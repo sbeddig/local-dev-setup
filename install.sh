@@ -126,7 +126,7 @@ set_wallpaper() {
 install_dev_libs() {
   curl -s "https://get.sdkman.io" | bash
   # shellcheck disable=SC1090
-  source ~/.sdkman/bin/sdkman-init.sh
+  source ~/.sdkman/bin/sdkman-init.sh || true
   sdk install java 8.0.265-amzn
 
   curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
