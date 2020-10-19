@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euo --pipefail
+set -euo pipefail
 
 mkdir -p /home/simon/Beddig-NAS/ebooks
 mkdir -p /home/simon/Beddig-NAS/homes
