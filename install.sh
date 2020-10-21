@@ -33,11 +33,13 @@ configure_zsh() {
   sudo apt install -y zsh
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || true
 
-  cat <<\EOF >>"$HOME"/.bashrc
-
-  export SHELL=$(which zsh)
-  [ -z "$ZSH_VERSION" ] && exec "$SHELL" -l
-EOF
+#  cat <<\EOF >>"$HOME"/.bashrc
+#
+#  export SHELL=$(which zsh)
+#  [ -z "$ZSH_VERSION" ] && exec "$SHELL" -l
+#EOF
+  zsh_path=$(command -v zsh)
+  chsh -s "$zsh_path"
 
   curl -sfL git.io/antibody | sudo sh -s - -b /usr/local/bin
 
@@ -139,6 +141,20 @@ install_dev_libs() {
   sudo apt update && sudo apt install golang-go -y
 }
 
+install_npm_libs() {
+  sudo npm install -g typescript @angular/cli aws-cdk
+}
+
+update_npm_libs() {
+  sudo npm update -g typescript @angular/cli aws-cdk
+}
+
+install_vscode_plugins() {
+  code --install-extension amazonwebservices.aws-toolkit-vscode
+  code --install-extension ms-azuretools.vscode-docker
+
+}
+
 laptop_tools() {
   sudo apt install laptop-mode-tools
 }
@@ -148,6 +164,11 @@ configure_zsh
 
 install_dev_libs
 install_dev_apps
+
+install_npm_libs
+update_npm_libs
+install_vscode_plugins
+
 clone_repos
 
 configure_desktop
