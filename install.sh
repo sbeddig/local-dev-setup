@@ -164,7 +164,7 @@ install_vscode_plugins() {
 }
 
 laptop_tools() {
-  sudo apt install laptop-mode-tools
+  sudo apt install laptop-mode-tools tlp tlp-rdw
 }
 
 install_common_apps
@@ -184,3 +184,4 @@ configure_security
 set_wallpaper
 
 #laptop_tools
+sudo apt autoremove -y
