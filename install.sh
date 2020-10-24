@@ -89,7 +89,7 @@ configure_desktop() {
   dconf write /org/gnome/desktop/interface/gtk-theme "'Yaru-dark'"
   dconf write /org/gnome/shell/extensions/dash-to-dock/dock-position "'BOTTOM'"
   dconf write /org/gnome/shell/extensions/dash-to-dock/dock-fixed false
-  dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'thunderbird.desktop', 'org.gnome.Nautilus.desktop', 'intellij-idea-ultimate_intellij-idea-ultimate.desktop', 'org.gnome.Terminal.desktop', 'code_code.desktop']"
+  dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'thunderbird.desktop', 'org.gnome.Nautilus.desktop', 'intellij-idea-ultimate_intellij-idea-ultimate.desktop', 'code_code.desktop', 'org.gnome.Terminal.desktop']"
   dconf write /org/gnome/desktop/interface/clock-show-weekday true
 
   sudo apt install gnome-shell-extension-system-monitor
