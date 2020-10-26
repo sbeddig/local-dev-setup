@@ -144,6 +144,10 @@ copy_env_variables_to_local_folder() {
 docker-registry : http://localhost:5000
 vault           : https://localhost:8200
 concourse-ci    : http://localhost:8080
+
+fly -t ci login --team-name main --concourse-url http://localhost:8080 --open-browser
+vault kv put concourse/main/github-private-ssh-key -version=1 value="$(cat ~/.ssh/id_rsa)"
+
 EOF
 
 }
