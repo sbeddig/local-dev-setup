@@ -87,7 +87,7 @@ start_local_environment() {
   echo "CONCOURSE_USERNAME=$CONCOURSE_USERNAME" > .env
   echo "CONCOURSE_PASSWORD=$CONCOURSE_PASSWORD" >> .env
 
-  docker-compose up -d --scale concourse-worker=2
+  docker-compose -p local-dev up -d --force-recreate --scale concourse-worker=2
 }
 
 print_urls() {
@@ -129,7 +129,8 @@ install_common() {
 }
 
 copy_env_variables_to_local_folder() {
-  mkdir -p ~/.localdev
+  rm -rf ~/.localdev/vault || true
+  rm -rf ~/.localdev/concourse || true
   mkdir -p ~/.localdev/vault
   mkdir -p ~/.localdev/concourse
   mv vault/vault-keys ~/.localdev/vault/keys
