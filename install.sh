@@ -58,6 +58,7 @@ install_dev_apps() {
   sudo snap install intellij-idea-ultimate --classic
   sudo ln -s /snap/intellij-idea-ultimate/current/bin/idea.sh /usr/local/bin/idea || true
   sudo snap install code --classic
+  sudo snap install task --classic
   sudo snap install drawio
   sudo apt install -y \
     python3 \
@@ -66,6 +67,7 @@ install_dev_apps() {
     docker-compose \
     awscli
 
+  sudo pip3 install awscli-local
   sudo groupadd docker || true
   sudo usermod -aG docker "$USER" || true
 }
@@ -129,12 +131,12 @@ set_wallpaper() {
 }
 
 install_dev_libs() {
-#  if ! command -v sdk; then
-#    curl -s "https://get.sdkman.io" | bash
-#    # shellcheck disable=SC1090
-#    source ~/.sdkman/bin/sdkman-init.sh || true
-#    sdk install java 8.0.265-amzn
-#  fi'
+  #  if ! command -v sdk; then
+  #    curl -s "https://get.sdkman.io" | bash
+  #    # shellcheck disable=SC1090
+  #    source ~/.sdkman/bin/sdkman-init.sh || true
+  #    sdk install java 8.0.265-amzn
+  #  fi'
 
   if ! node --version; then
     curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
