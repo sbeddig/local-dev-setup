@@ -60,13 +60,14 @@ install_dev_apps() {
   sudo snap install code --classic
   sudo snap install task --classic
   sudo snap install drawio
+  sudo snap install postman
   sudo apt install -y \
     python3 \
     python3-pip \
     docker.io \
-    docker-compose \
-    awscli
+    docker-compose
 
+  sudo pip3 install awscli
   sudo pip3 install awscli-local
   sudo groupadd docker || true
   sudo usermod -aG docker "$USER" || true
