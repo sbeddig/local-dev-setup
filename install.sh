@@ -25,6 +25,7 @@ install_common_apps() {
     vlc \
     chromium-browser \
     libreoffice \
+    hyphen-de \
     lm-sensors
   sudo snap install bitwarden
 }
