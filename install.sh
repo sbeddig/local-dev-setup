@@ -171,6 +171,21 @@ laptop_tools() {
   sudo apt install laptop-mode-tools tlp tlp-rdw
 }
 
+install_brew() {
+  if ! brew --version; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >>/home/simon/.zprofile
+    echo 'source /home/simon/.zprofile' >> /home/simon/.zshrc
+    eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+    brew install gcc
+  fi
+}
+
+install_aws_sam_cli() {
+  brew tap aws/tap
+  brew install aws-sam-cli
+}
+
 install_common_apps
 configure_zsh
 
@@ -186,6 +201,9 @@ clone_repos
 configure_desktop
 configure_security
 set_wallpaper
+
+install_brew
+install_aws_sam_cli
 
 #laptop_tools
 sudo apt autoremove -y
