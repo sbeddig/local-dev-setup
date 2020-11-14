@@ -155,11 +155,11 @@ install_dev_libs() {
 }
 
 install_npm_libs() {
-  sudo npm install -g typescript @angular/cli aws-cdk
+  sudo npm install -g typescript @angular/cli aws-cdk aws-cdk-local
 }
 
 update_npm_libs() {
-  sudo npm update -g typescript @angular/cli aws-cdk
+  sudo npm update -g typescript @angular/cli aws-cdk aws-cdk-local
 }
 
 install_vscode_plugins() {
