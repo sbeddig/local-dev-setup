@@ -7,6 +7,7 @@ export DEBIAN_FRONTEND=noninteractive
 INSTALL_DIR=$PWD
 
 install_common_apps() {
+  sudo apt update && sudo apt upgrade -y
   sudo apt install -y \
     nfs-common \
     curl \
@@ -23,7 +24,6 @@ install_common_apps() {
     rhythmbox \
     vim \
     vlc \
-    chromium-browser \
     libreoffice \
     hyphen-de \
     lm-sensors
@@ -93,7 +93,7 @@ configure_desktop() {
   dconf write /org/gnome/desktop/interface/gtk-theme "'Yaru-dark'"
   dconf write /org/gnome/shell/extensions/dash-to-dock/dock-position "'BOTTOM'"
   dconf write /org/gnome/shell/extensions/dash-to-dock/dock-fixed false
-  dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'thunderbird.desktop', 'org.gnome.Nautilus.desktop', 'intellij-idea-ultimate_intellij-idea-ultimate.desktop', 'code_code.desktop', 'postman_postman.desktop', 'org.gnome.Terminal.desktop']"
+  dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'google-chrome.desktop', 'thunderbird.desktop', 'org.gnome.Nautilus.desktop', 'intellij-idea-ultimate_intellij-idea-ultimate.desktop', 'code_code.desktop', 'postman_postman.desktop', 'org.gnome.Terminal.desktop']"
   dconf write /org/gnome/desktop/interface/clock-show-weekday true
 
   sudo apt install gnome-shell-extension-system-monitor
@@ -175,7 +175,7 @@ install_brew() {
   if ! brew --version; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
     echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >>/home/simon/.zprofile
-    echo 'source /home/simon/.zprofile' >> /home/simon/.zshrc
+    echo 'source /home/simon/.zprofile' >>/home/simon/.zshrc
     eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
     brew install gcc
   fi
@@ -186,11 +186,20 @@ install_aws_sam_cli() {
   brew install aws-sam-cli
 }
 
+install_google_chrome() {
+  if ! google-chrome --version; then
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    sudo dpkg -i google-chrome-stable_current_amd64.deb
+    rm google-chrome-stable_current_amd64.deb
+  fi
+}
+
 install_common_apps
 configure_zsh
 
 install_dev_libs
 install_dev_apps
+install_google_chrome
 
 install_npm_libs
 update_npm_libs
