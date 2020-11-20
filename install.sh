@@ -28,6 +28,7 @@ install_common_apps() {
     hyphen-de \
     lm-sensors
   sudo snap install bitwarden
+  sudo snap install youtube-music-desktop-app
 }
 
 configure_zsh() {
