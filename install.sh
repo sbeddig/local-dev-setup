@@ -182,8 +182,10 @@ install_brew() {
 }
 
 install_aws_sam_cli() {
-  brew tap aws/tap
-  brew install aws-sam-cli
+  if ! sam --version; then
+    brew tap aws/tap
+    brew install aws-sam-cli
+  fi
 }
 
 install_google_chrome() {
@@ -220,6 +222,7 @@ set_wallpaper
 
 install_brew
 install_aws_sam_cli
+install_albert
 
 #laptop_tools
 sudo apt autoremove -y
