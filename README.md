@@ -15,3 +15,4 @@ Switch between project windows  | ALT + F6
 Search everywhere               | CTRL + SHIFT + F
 Replace everywhere              | CTRL + SHIFT + R
 Delete open tab                 | CTRL + F4
+Toggle Breakpoint               | CTRL + F8

@@ -94,7 +94,7 @@ configure_desktop() {
   dconf write /org/gnome/desktop/interface/gtk-theme "'Yaru-dark'"
   dconf write /org/gnome/shell/extensions/dash-to-dock/dock-position "'BOTTOM'"
   dconf write /org/gnome/shell/extensions/dash-to-dock/dock-fixed false
-  dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'google-chrome.desktop', 'thunderbird.desktop', 'org.gnome.Nautilus.desktop', 'intellij-idea-ultimate_intellij-idea-ultimate.desktop', 'code_code.desktop', 'postman_postman.desktop', 'org.gnome.Terminal.desktop']"
+  dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'google-chrome.desktop', 'thunderbird.desktop', 'org.gnome.Nautilus.desktop', 'intellij-idea-ultimate_intellij-idea-ultimate.desktop', 'code_code.desktop', 'postman_postman.desktop', 'nosql-workbench.desktop', 'org.gnome.Terminal.desktop']"
   dconf write /org/gnome/desktop/interface/clock-show-weekday true
 
   sudo apt install gnome-shell-extension-system-monitor
@@ -161,6 +161,7 @@ install_npm_libs() {
 
 update_npm_libs() {
   sudo npm update -g typescript @angular/cli aws-cdk aws-cdk-local
+  sudo npm install -g npm
 }
 
 install_vscode_plugins() {
@@ -204,6 +205,21 @@ install_albert() {
   sudo apt install albert -y
 }
 
+install_no_sql_workbench() {
+  if ! command -v nosql-workbench; then
+    wget -O nosql-workbench.AppImage https://s3.amazonaws.com/nosql-workbench/NoSQL%20Workbench-linux-x86_64-2.0.0.AppImage
+    chmod +x nosql-workbench.AppImage
+    sudo mv nosql-workbench.AppImage /usr/local/bin/nosql-workbench
+    sudo cp nosql-workbench/nosql-workbench.png /usr/local/bin/
+    sudo cp nosql-workbench/nosql-workbench.desktop /usr/share/applications/
+  fi
+}
+
+install_custom_scripts() {
+  cp -r custom_scripts ~/.custom_scripts
+}
+
+
 install_common_apps
 configure_zsh
 
@@ -224,6 +240,9 @@ set_wallpaper
 install_brew
 install_aws_sam_cli
 install_albert
+install_no_sql_workbench
+
+install_custom_scripts
 
 #laptop_tools
 sudo apt autoremove -y

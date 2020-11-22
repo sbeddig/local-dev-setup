@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Exec=/usr/local/bin/nosql-workbench
+Name=NoSQL Workbench
+Comment=NoSQL Workbench
+Icon=/usr/local/bin/nosql-workbench.png
