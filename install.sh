@@ -6,8 +6,9 @@ export DEBIAN_FRONTEND=noninteractive
 
 INSTALL_DIR=$PWD
 
-install_common_apps() {
-  sudo apt update && sudo apt upgrade -y
+install_common() {
+  sudo apt update
+  sudo apt upgrade -y
   sudo apt install -y \
     nfs-common \
     curl \
@@ -26,63 +27,106 @@ install_common_apps() {
     vlc \
     libreoffice \
     hyphen-de \
-    lm-sensors
+    lm-sensors \
+    python3 \
+    python3-pip \
+    docker.io \
+    docker-compose
   sudo snap install bitwarden
   sudo snap install youtube-music-desktop-app
+  sudo groupadd docker || true
+  sudo usermod -aG docker "$USER" || true
+  install_google_chrome
+  install_albert
+  install_no_sql_workbench
 }
 
-configure_zsh() {
-  if ! command -v zsh; then
-    sudo apt install -y zsh
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || true
-
-    #  cat <<\EOF >>"$HOME"/.bashrc
-    #
-    #  export SHELL=$(which zsh)
-    #  [ -z "$ZSH_VERSION" ] && exec "$SHELL" -l
-    #EOF
-    zsh_path=$(command -v zsh)
-    chsh -s "$zsh_path"
-
-    curl -sfL git.io/antibody | sudo sh -s - -b /usr/local/bin
-
-    mkdir -p ~/.zsh/completion
-    curl -L https://raw.githubusercontent.com/docker/compose/1.27.4/contrib/completion/zsh/_docker-compose >~/.zsh/completion/_docker-compose
-
-    cp "$INSTALL_DIR"/zsh/.bash_aliases ~/.bash_aliases
-    cp "$INSTALL_DIR"/zsh/.zshrc ~/.zshrc
-    cp "$INSTALL_DIR"/zsh/.zsh_plugins.txt ~/.zsh_plugins.txt
-    cp "$INSTALL_DIR"/zsh/.p10k.zsh ~/.p10k.zsh
+install_google_chrome() {
+  if ! google-chrome --version; then
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    sudo dpkg -i google-chrome-stable_current_amd64.deb
+    rm google-chrome-stable_current_amd64.deb
   fi
 }
 
-install_dev_apps() {
+install_albert() {
+  echo 'deb http://download.opensuse.org/repositories/home:/manuelschneid3r/xUbuntu_20.04/ /' | sudo tee /etc/apt/sources.list.d/home:manuelschneid3r.list
+  curl -fsSL https://download.opensuse.org/repositories/home:manuelschneid3r/xUbuntu_20.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_manuelschneid3r.gpg >/dev/null
+  sudo apt update
+  sudo apt install albert -y
+}
+
+install_no_sql_workbench() {
+  if ! command -v nosql-workbench; then
+    wget -O nosql-workbench.AppImage https://s3.amazonaws.com/nosql-workbench/NoSQL%20Workbench-linux-x86_64-2.0.0.AppImage
+    chmod +x nosql-workbench.AppImage
+    sudo mv nosql-workbench.AppImage /usr/local/bin/nosql-workbench
+    sudo cp nosql-workbench/nosql-workbench.png /usr/local/bin/
+    sudo cp nosql-workbench/nosql-workbench.desktop /usr/share/applications/
+  fi
+}
+
+install_zsh() {
+  ./configure_zsh.sh
+}
+
+install_dev() {
+  install_sdkman
+  install_node
+  install_go
   sudo snap install intellij-idea-ultimate --classic
   sudo ln -s /snap/intellij-idea-ultimate/current/bin/idea.sh /usr/local/bin/idea || true
   sudo snap install code --classic
   sudo snap install task --classic
   sudo snap install drawio
   sudo snap install postman
-  sudo apt install -y \
-    python3 \
-    python3-pip \
-    docker.io \
-    docker-compose
-
   sudo pip3 install awscli
   sudo pip3 install awscli-local
-  sudo groupadd docker || true
-  sudo usermod -aG docker "$USER" || true
+  install_brew
+  install_aws_sam_cli
 }
 
-clone_repos() {
-  mkdir -p "$HOME"/repositories
-  cd "$HOME"/repositories
-  repositories=$(cat "$INSTALL_DIR"/repos)
-  for repo in $repositories; do
-    git clone git@github.com:sbeddig/"$repo".git || true
-  done
-  cd "$INSTALL_DIR"
+install_brew() {
+  if ! brew --version; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    # shellcheck disable=SC2016
+    echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >>/home/simon/.zprofile
+    echo 'source /home/simon/.zprofile' >>/home/simon/.zshrc
+    eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+    brew install gcc
+  fi
+}
+
+install_aws_sam_cli() {
+  if ! sam --version; then
+    brew tap aws/tap
+    brew install aws-sam-cli
+  fi
+}
+
+install_sdkman() {
+  if [ ! -d "$HOME/.sdkman" ]; then
+    curl -s "https://get.sdkman.io" | bash
+    source "$HOME"/.sdkman/bin/sdkman-init.sh || true
+    sdk install java 8.0.265-amzn
+  fi
+}
+
+install_node() {
+  if ! node --version; then
+    curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+    sudo apt install -y nodejs gcc g++ make
+    curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+    sudo apt update && sudo apt install yarn
+  fi
+}
+
+install_go() {
+  if ! go version; then
+    sudo add-apt-repository ppa:longsleep/golang-backports -y
+    sudo apt update && sudo apt install golang-go -
+  fi
 }
 
 # dconf watch /
@@ -133,116 +177,44 @@ set_wallpaper() {
   dconf write /org/gnome/desktop/background/picture-uri "'file:///home/simon/Pictures/Wallpapers/wallpaper.png'"
 }
 
-install_dev_libs() {
-  #  if ! command -v sdk; then
-  #    curl -s "https://get.sdkman.io" | bash
-  #    # shellcheck disable=SC1090
-  #    source ~/.sdkman/bin/sdkman-init.sh || true
-  #    sdk install java 8.0.265-amzn
-  #  fi'
-
-  if ! node --version; then
-    curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-    sudo apt install -y nodejs gcc g++ make
-    curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-    sudo apt update && sudo apt install yarn
-  fi
-
-  if ! go version; then
-    sudo add-apt-repository ppa:longsleep/golang-backports -y
-    sudo apt update && sudo apt install golang-go -
-  fi
-}
-
 install_npm_libs() {
-  sudo npm install -g typescript @angular/cli aws-cdk aws-cdk-local
-}
-
-update_npm_libs() {
-  sudo npm update -g typescript @angular/cli aws-cdk aws-cdk-local
+  sudo npm install -g typescript ts-node @angular/cli aws-cdk aws-cdk-local
+  sudo npm update -g typescript ts-node @angular/cli aws-cdk aws-cdk-local
   sudo npm install -g npm
 }
 
-install_vscode_plugins() {
+setup_vscode() {
   code --install-extension amazonwebservices.aws-toolkit-vscode
   code --install-extension ms-azuretools.vscode-docker
-}
+  code --install-extension esbenp.prettier-vscode
 
-laptop_tools() {
-  sudo apt install laptop-mode-tools tlp tlp-rdw
-}
+  settings=$(cat "$HOME"/.config/Code/User/settings.json)
 
-install_brew() {
-  if ! brew --version; then
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-    echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >>/home/simon/.zprofile
-    echo 'source /home/simon/.zprofile' >>/home/simon/.zshrc
-    eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-    brew install gcc
-  fi
-}
+  settings=$(echo "$settings" | jq '. += {"editor.formatOnSave":true}')
+  settings=$(echo "$settings" | jq '. += {"telemetry.enableTelemetry": false}')
+  settings=$(echo "$settings" | jq '. += {"aws.telemetry": false}')
+  settings=$(echo "$settings" | jq '. += {"telemetry.enableCrashReporter": false}')
 
-install_aws_sam_cli() {
-  if ! sam --version; then
-    brew tap aws/tap
-    brew install aws-sam-cli
-  fi
-}
-
-install_google_chrome() {
-  if ! google-chrome --version; then
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    sudo dpkg -i google-chrome-stable_current_amd64.deb
-    rm google-chrome-stable_current_amd64.deb
-  fi
-}
-
-install_albert() {
-  echo 'deb http://download.opensuse.org/repositories/home:/manuelschneid3r/xUbuntu_20.04/ /' | sudo tee /etc/apt/sources.list.d/home:manuelschneid3r.list
-  curl -fsSL https://download.opensuse.org/repositories/home:manuelschneid3r/xUbuntu_20.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_manuelschneid3r.gpg >/dev/null
-  sudo apt update
-  sudo apt install albert -y
-}
-
-install_no_sql_workbench() {
-  if ! command -v nosql-workbench; then
-    wget -O nosql-workbench.AppImage https://s3.amazonaws.com/nosql-workbench/NoSQL%20Workbench-linux-x86_64-2.0.0.AppImage
-    chmod +x nosql-workbench.AppImage
-    sudo mv nosql-workbench.AppImage /usr/local/bin/nosql-workbench
-    sudo cp nosql-workbench/nosql-workbench.png /usr/local/bin/
-    sudo cp nosql-workbench/nosql-workbench.desktop /usr/share/applications/
-  fi
+  echo "$settings" >"$HOME"/.config/Code/User/settings.json
 }
 
 install_custom_scripts() {
-  cp -r custom_scripts ~/.custom_scripts
+  cp -r custom_scripts "$HOME"/.custom_scripts
 }
 
+cleanup() {
+  sudo apt autoremove -y
+}
 
-install_common_apps
-configure_zsh
+install_common &>/dev/null
+install_zsh &>/dev/null
+install_dev &>/dev/null
+install_npm_libs &>/dev/null
+install_custom_scripts &>/dev/null
+setup_vscode &>/dev/null
 
-install_dev_libs
-install_dev_apps
-install_google_chrome
+configure_desktop &>/dev/null
+set_wallpaper &>/dev/null
+configure_security &>/dev/null
 
-install_npm_libs
-update_npm_libs
-install_vscode_plugins
-
-clone_repos
-
-configure_desktop
-configure_security
-set_wallpaper
-
-install_brew
-install_aws_sam_cli
-install_albert
-install_no_sql_workbench
-
-install_custom_scripts
-
-#laptop_tools
-sudo apt autoremove -y
+cleanup &>/dev/null
