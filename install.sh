@@ -187,6 +187,7 @@ setup_vscode() {
   code --install-extension amazonwebservices.aws-toolkit-vscode
   code --install-extension ms-azuretools.vscode-docker
   code --install-extension esbenp.prettier-vscode
+  code --install-extension kiteco.kite
 
   settings=$(cat "$HOME"/.config/Code/User/settings.json)
 
