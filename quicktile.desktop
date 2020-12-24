@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Exec=quicktile --daemonize
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=quicktile
