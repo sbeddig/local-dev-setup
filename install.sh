@@ -70,13 +70,16 @@ install_zsh() {
   ./configure_zsh.sh
 }
 
+install_vscode() {
+  ./visual_studio_code.sh
+}
+
 install_dev() {
   install_sdkman
   install_node
   install_go
   sudo snap install intellij-idea-ultimate --classic
   sudo ln -s /snap/intellij-idea-ultimate/current/bin/idea.sh /usr/local/bin/idea || true
-  sudo snap install code --classic
   sudo snap install task --classic
   sudo snap install drawio
   sudo snap install postman
@@ -92,6 +95,7 @@ install_brew() {
     # shellcheck disable=SC2016
     echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >>/home/simon/.zprofile
     echo 'source /home/simon/.zprofile' >>/home/simon/.zshrc
+    # shellcheck disable=SC2046
     eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
     brew install gcc
   fi
@@ -178,24 +182,9 @@ set_wallpaper() {
 }
 
 install_npm_libs() {
-  sudo npm install -g typescript ts-node @angular/cli aws-cdk aws-cdk-local
-  sudo npm update -g typescript ts-node @angular/cli aws-cdk aws-cdk-local
+  sudo npm install -g typescript ts-node @angular/cli aws-cdk aws-cdk-local @vue/cli vue@next
+  sudo npm update -g typescript ts-node @angular/cli aws-cdk aws-cdk-local @vue/cli vue@next
   sudo npm install -g npm
-}
-
-setup_vscode() {
-  code --install-extension amazonwebservices.aws-toolkit-vscode
-  code --install-extension ms-azuretools.vscode-docker
-  code --install-extension esbenp.prettier-vscode
-
-  settings=$(cat "$HOME"/.config/Code/User/settings.json)
-
-  settings=$(echo "$settings" | jq '. += {"editor.formatOnSave":true}')
-  settings=$(echo "$settings" | jq '. += {"telemetry.enableTelemetry": false}')
-  settings=$(echo "$settings" | jq '. += {"aws.telemetry": false}')
-  settings=$(echo "$settings" | jq '. += {"telemetry.enableCrashReporter": false}')
-
-  echo "$settings" >"$HOME"/.config/Code/User/settings.json
 }
 
 install_custom_scripts() {
@@ -223,7 +212,6 @@ install_zsh &>/dev/null
 install_dev &>/dev/null
 install_npm_libs &>/dev/null
 install_custom_scripts &>/dev/null
-setup_vscode &>/dev/null
 install_quicktile &>/dev/null
 
 configure_desktop &>/dev/null
