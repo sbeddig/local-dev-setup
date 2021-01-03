@@ -7,6 +7,12 @@ install_plugins() {
   code --install-extension ms-azuretools.vscode-docker
   code --install-extension esbenp.prettier-vscode
   code --install-extension octref.vetur #vue.js https://marketplace.visualstudio.com/items?itemName=octref.vetur
+
+  # angular
+  code --install-extension johnpapa.angular2
+  code --install-extension angular.ng-template
+  code --install-extension alexiv.vscode-angular2-files
+  code --install-extension cyrilletuzi.angular-schematics
 }
 
 setup_vscode() {
