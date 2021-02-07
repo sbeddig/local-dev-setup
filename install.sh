@@ -210,7 +210,7 @@ install_quicktile() {
   if [ ! -d "$HOME/.config/autostart/quicktile.desktop" ]; then
     cp "$TOOLS_DIR"/quicktile.desktop "$HOME"/.config/autostart/quicktile.desktop
   fi
-  cp quicktile.cfg "$HOME"/.config/quicktile.cfg
+  cp "$TOOLS_DIR"/quicktile.cfg "$HOME"/.config/quicktile.cfg
 }
 
 install_common &>/dev/null
