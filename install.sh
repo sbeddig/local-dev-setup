@@ -5,6 +5,7 @@ set -euxo pipefail
 export DEBIAN_FRONTEND=noninteractive
 
 INSTALL_DIR=$PWD
+TOOLS_DIR=$INSTALL_DIR/tools
 
 install_common() {
   sudo apt update
@@ -61,17 +62,21 @@ install_no_sql_workbench() {
     wget -O nosql-workbench.AppImage https://s3.amazonaws.com/nosql-workbench/NoSQL%20Workbench-linux-x86_64-2.0.0.AppImage
     chmod +x nosql-workbench.AppImage
     sudo mv nosql-workbench.AppImage /usr/local/bin/nosql-workbench
-    sudo cp nosql-workbench/nosql-workbench.png /usr/local/bin/
-    sudo cp nosql-workbench/nosql-workbench.desktop /usr/share/applications/
+    sudo cp "$TOOLS_DIR"/nosql-workbench/nosql-workbench.png /usr/local/bin/
+    sudo cp "$TOOLS_DIR"/nosql-workbench/nosql-workbench.desktop /usr/share/applications/
   fi
 }
 
 install_zsh() {
+  cd "$TOOLS_DIR"
   ./configure_zsh.sh
+  cd "$INSTALL_DIR"
 }
 
 install_vscode() {
+  cd "$TOOLS_DIR"
   ./visual_studio_code.sh
+  cd "$INSTALL_DIR"
 }
 
 install_dev() {
@@ -176,7 +181,7 @@ configure_security() {
 
 set_wallpaper() {
   mkdir -p "$HOME"/Pictures/Wallpapers
-  cp "$INSTALL_DIR"/wallpaper.png "$HOME"/Pictures/Wallpapers/
+  cp "$TOOLS_DIR"/wallpaper.png "$HOME"/Pictures/Wallpapers/
 
   dconf write /org/gnome/desktop/background/picture-uri "'file:///home/simon/Pictures/Wallpapers/wallpaper.png'"
 }
@@ -203,7 +208,7 @@ install_quicktile() {
     sed -i 's/KP_//' "$HOME"/.config/quicktile.cfg
   fi
   if [ ! -d "$HOME/.config/autostart/quicktile.desktop" ]; then
-    cp quicktile.desktop "$HOME"/.config/autostart/quicktile.desktop
+    cp "$TOOLS_DIR"/quicktile.desktop "$HOME"/.config/autostart/quicktile.desktop
   fi
 }
 
