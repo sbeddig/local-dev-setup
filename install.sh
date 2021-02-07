@@ -113,6 +113,13 @@ install_aws_sam_cli() {
   fi
 }
 
+install_cfn_nag() {
+  if ! cfn_nag --version; then
+    brew install ruby brew-gem
+    brew gem install cfn-nag
+  fi
+}
+
 install_sdkman() {
   if [ ! -d "$HOME/.sdkman" ]; then
     curl -s "https://get.sdkman.io" | bash
