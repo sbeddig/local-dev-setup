@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euxo pipefail
+set -euo pipefail
 
 export DEBIAN_FRONTEND=noninteractive
 
@@ -210,6 +210,7 @@ install_quicktile() {
   if [ ! -d "$HOME/.config/autostart/quicktile.desktop" ]; then
     cp "$TOOLS_DIR"/quicktile.desktop "$HOME"/.config/autostart/quicktile.desktop
   fi
+  cp quicktile.cfg "$HOME"/.config/quicktile.cfg
 }
 
 install_common &>/dev/null
@@ -222,5 +223,6 @@ install_quicktile &>/dev/null
 configure_desktop &>/dev/null
 set_wallpaper &>/dev/null
 configure_security &>/dev/null
+install_vscode &>/dev/null
 
 cleanup &>/dev/null
