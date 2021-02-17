@@ -88,10 +88,20 @@ install_dev() {
   sudo snap install task --classic
   sudo snap install drawio
   sudo snap install postman
-  sudo pip3 install awscli
+#  sudo pip3 install awscli
+  install_aws_v2_cli
   sudo pip3 install awscli-local
   install_brew
   install_aws_sam_cli
+}
+
+install_aws_v2_cli() {
+  mkdir "$INSTALL_DIR"/aws_tmp
+  cd "$INSTALL_DIR"/aws_tmp
+  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+  unzip awscliv2.zip
+  sudo ./aws/install
+  rm -rf "$INSTALL_DIR"/aws_tmp
 }
 
 install_brew() {

@@ -68,6 +68,7 @@ role_arn = ROLE_ARN (custom admin role arn)
 mfa_serial = MFA_SERIAL
 source_profile = mfa
 region = eu-west-1
+cli_pager = (to fix problem with cli2 if output is sent to vi)
 ```
 
 credentials:
