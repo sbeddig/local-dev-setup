@@ -64,7 +64,7 @@ region = eu-west-1
 output = json
 
 [profile admin]
-role_arn = ROLE_ARN
+role_arn = ROLE_ARN (custom admin role arn)
 mfa_serial = MFA_SERIAL
 source_profile = mfa
 region = eu-west-1
