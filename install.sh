@@ -139,13 +139,8 @@ install_sdkman() {
 }
 
 install_node() {
-  if ! node --version; then
-    curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-    sudo apt install -y nodejs gcc g++ make
-    curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-    sudo apt update && sudo apt install yarn
-  fi
+  sudo snap install node --classic
+  sudo npm install -g npm@latest
 }
 
 install_go() {
