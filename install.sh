@@ -30,6 +30,7 @@ install_common() {
     hyphen-de \
     lm-sensors \
     python3 \
+    postgresql-client \
     python3-pip \
     docker.io \
     docker-compose
@@ -38,8 +39,8 @@ install_common() {
   sudo groupadd docker || true
   sudo usermod -aG docker "$USER" || true
   install_google_chrome
-  install_albert
   install_no_sql_workbench
+  install_intellij
 }
 
 install_google_chrome() {
@@ -50,13 +51,6 @@ install_google_chrome() {
   fi
 }
 
-install_albert() {
-  echo 'deb http://download.opensuse.org/repositories/home:/manuelschneid3r/xUbuntu_20.04/ /' | sudo tee /etc/apt/sources.list.d/home:manuelschneid3r.list
-  curl -fsSL https://download.opensuse.org/repositories/home:manuelschneid3r/xUbuntu_20.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_manuelschneid3r.gpg >/dev/null
-  sudo apt update
-  sudo apt install albert -y
-}
-
 install_no_sql_workbench() {
   if ! command -v nosql-workbench; then
     wget -O nosql-workbench.AppImage https://s3.amazonaws.com/nosql-workbench/NoSQL%20Workbench-linux-x86_64-2.0.0.AppImage
@@ -64,6 +58,14 @@ install_no_sql_workbench() {
     sudo mv nosql-workbench.AppImage /usr/local/bin/nosql-workbench
     sudo cp "$TOOLS_DIR"/nosql-workbench/nosql-workbench.png /usr/local/bin/
     sudo cp "$TOOLS_DIR"/nosql-workbench/nosql-workbench.desktop /usr/share/applications/
+  fi
+}
+
+install_intellij() {
+  if ! command -v idea; then
+    cd tools/intellij
+    ./install.sh
+    cd "$INSTALL_DIR"
   fi
 }
 
@@ -83,12 +85,10 @@ install_dev() {
   install_sdkman
   install_node
   install_go
-  sudo snap install intellij-idea-ultimate --classic
-  sudo ln -s /snap/intellij-idea-ultimate/current/bin/idea.sh /usr/local/bin/idea || true
   sudo snap install task --classic
   sudo snap install drawio
   sudo snap install postman
-#  sudo pip3 install awscli
+  #  sudo pip3 install awscli
   install_aws_v2_cli
   sudo pip3 install awscli-local
   install_brew
@@ -159,7 +159,7 @@ configure_desktop() {
   dconf write /org/gnome/desktop/interface/gtk-theme "'Yaru-dark'"
   dconf write /org/gnome/shell/extensions/dash-to-dock/dock-position "'BOTTOM'"
   dconf write /org/gnome/shell/extensions/dash-to-dock/dock-fixed false
-  dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'google-chrome.desktop', 'thunderbird.desktop', 'org.gnome.Nautilus.desktop', 'intellij-idea-ultimate_intellij-idea-ultimate.desktop', 'code_code.desktop', 'postman_postman.desktop', 'nosql-workbench.desktop', 'org.gnome.Terminal.desktop']"
+  dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'google-chrome.desktop', 'thunderbird.desktop', 'org.gnome.Nautilus.desktop', 'intellij.desktop', 'code_code.desktop', 'postman_postman.desktop', 'nosql-workbench.desktop', 'org.gnome.Terminal.desktop']"
   dconf write /org/gnome/desktop/interface/clock-show-weekday true
 
   sudo apt install gnome-shell-extension-system-monitor
