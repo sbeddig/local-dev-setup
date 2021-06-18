@@ -31,6 +31,7 @@ install_common() {
     lm-sensors \
     python3 \
     postgresql-client \
+    protobuf-compiler \
     python3-pip \
     docker.io \
     docker-compose
