@@ -13,3 +13,5 @@ tar -xzf android-studio-ide-202.7351085-linux.tar.gz
 rm android-studio-ide-202.7351085-linux.tar.gz
 
 sudo mv android-studio /opt/android-studio
+
+/opt/android-studio/bin/studio.sh

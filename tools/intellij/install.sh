@@ -13,3 +13,4 @@ rm ideaIU-$VERSION.tar.gz
 
 sudo mv "$FOLDER" /opt/intellij-ultimate
 
+/opt/intellij-ultimate/bin/idea.sh
